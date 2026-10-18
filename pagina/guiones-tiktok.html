@@ -1,0 +1,822 @@
+<title>Guiones TikTok</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: una columna estrecha tipo hoja de rodaje; cada guion es una tira con su línea de tiempo en segundos. */
+:root {
+  --bg: #f2f3f6;
+  --panel: #ffffff;
+  --ink: #16171d;
+  --muted: #5d6170;
+  --line: #dcdee6;
+  --rec: #d93a3f;
+  --rec-soft: #fbe7e7;
+  --cue: #2b6cb0;
+  --cue-soft: #e4eef9;
+  --warn: #8a5a00;
+  --warn-soft: #fff3d6;
+  --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Figtree", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111217; --panel: #1a1c23; --ink: #eceef4; --muted: #9a9fb0; --line: #2c2f3a;
+    --rec: #ff5c61; --rec-soft: #3a1d20; --cue: #7cb4f0; --cue-soft: #1b2a3d;
+    --warn: #f2c25b; --warn-soft: #3a2e12; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111217; --panel: #1a1c23; --ink: #eceef4; --muted: #9a9fb0; --line: #2c2f3a;
+  --rec: #ff5c61; --rec-soft: #3a1d20; --cue: #7cb4f0; --cue-soft: #1b2a3d;
+  --warn: #f2c25b; --warn-soft: #3a2e12; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  background: var(--bg); color: var(--ink); font: 16px/1.5 var(--f-body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 48px;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+.wrap { max-width: 640px; margin: 0 auto; display: grid; gap: 20px; }
+button, input, textarea, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--cue); outline-offset: 2px; }
+
+header.top {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg);
+  padding-top: 16px; display: grid; gap: 12px;
+}
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand h1 { margin: 0; font: 800 26px/1.1 var(--f-display); letter-spacing: -0.02em; }
+.rec { display: inline-flex; align-items: center; gap: 6px; font: 500 11px var(--f-mono); color: var(--rec); letter-spacing: 0.08em; border: 1px solid currentColor; border-radius: 4px; padding: 2px 6px; }
+.rec::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+nav.tabs { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--line); }
+nav.tabs button { background: none; border: 0; padding: 8px 0 10px; color: var(--muted); font-weight: 600; font-size: 15px; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+nav.tabs button[aria-selected="true"] { color: var(--ink); border-color: var(--rec); }
+
+form { display: grid; gap: 16px; }
+.field { display: grid; gap: 6px; }
+.label { font-size: 13px; font-weight: 600; color: var(--muted); }
+.input { width: 100%; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
+.input:focus { border-color: var(--cue); outline: none; }
+textarea.input { resize: vertical; min-height: 84px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px; font-size: 14px; }
+.chip[aria-pressed="true"] { border-color: var(--rec); background: var(--rec-soft); color: var(--rec); font-weight: 600; }
+.seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.seg .chip { font-family: var(--f-mono); }
+.count { display: flex; align-items: center; gap: 12px; }
+.count input[type="range"] { flex: 1; accent-color: var(--rec); }
+.count output { font: 500 20px var(--f-mono); min-width: 2ch; text-align: right; }
+.hint { font-size: 13px; color: var(--muted); margin: 0; }
+.link { background: none; border: 0; padding: 0; color: var(--cue); font-weight: 600; font-size: 14px; text-align: left; }
+
+.btn { border: 0; border-radius: 10px; padding: 13px 16px; font-weight: 700; background: var(--ink); color: var(--bg); }
+.btn.rec-btn { background: var(--rec); color: #fff; }
+.btn:disabled { opacity: 0.5; cursor: default; }
+.btn-sec { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; font-weight: 600; font-size: 14px; }
+.status { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; border-radius: 10px; background: var(--cue-soft); color: var(--cue); font-weight: 600; font-size: 14px; }
+.error { padding: 12px 14px; border-radius: 10px; background: var(--rec-soft); color: var(--rec); font-size: 14px; }
+
+.results { display: grid; gap: 16px; }
+.results h2 { margin: 8px 0 0; font: 800 20px var(--f-display); }
+.sample-tag { font: 500 11px var(--f-mono); letter-spacing: 0.08em; color: var(--muted); border: 1px dashed var(--line); border-radius: 4px; padding: 2px 6px; margin-left: 8px; vertical-align: middle; }
+
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px; display: grid; gap: 16px; min-width: 0; }
+.card-head { display: flex; justify-content: space-between; align-items: start; gap: 12px; }
+.eyebrow { font: 500 11px var(--f-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.card-head h3 { margin: 2px 0 0; font: 600 18px/1.25 var(--f-display); text-wrap: balance; }
+.stats { font: 500 12px var(--f-mono); color: var(--muted); white-space: nowrap; text-align: right; font-variant-numeric: tabular-nums; }
+
+.timeline { display: flex; height: 22px; border-radius: 6px; overflow: hidden; gap: 2px; }
+.timeline span { display: flex; align-items: center; justify-content: center; font: 500 10px var(--f-mono); min-width: 0; overflow: hidden; }
+.tl-hook { background: var(--rec); color: #fff; }
+.tl-body { background: var(--cue-soft); color: var(--cue); }
+.tl-end { background: var(--ink); color: var(--bg); }
+.tl-scale { display: flex; justify-content: space-between; font: 500 10px var(--f-mono); color: var(--muted); margin-top: 4px; font-variant-numeric: tabular-nums; }
+
+.section-title { font-size: 13px; font-weight: 700; color: var(--muted); margin: 0 0 8px; display: flex; gap: 8px; align-items: baseline; }
+.section-title .tc { font: 500 11px var(--f-mono); }
+.options { display: grid; gap: 8px; }
+.option { display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; align-items: start; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; cursor: pointer; }
+.option:has(input:checked) { border-color: var(--rec); background: var(--rec-soft); }
+.option input[type="radio"] { margin: 4px 0 0; accent-color: var(--rec); }
+.option .type { font-size: 12px; color: var(--muted); }
+.option .say { grid-column: 2; font-weight: 600; font-size: 17px; line-height: 1.3; }
+.option.cierre .say { font-size: 16px; }
+.scenes { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; counter-reset: esc; }
+.scene { border-left: 3px solid var(--cue); padding: 4px 0 4px 12px; display: grid; gap: 2px; }
+.scene .say { font-size: 16px; }
+.scene .shot { font-size: 13px; color: var(--muted); }
+.scene .shot b { font: 500 11px var(--f-mono); color: var(--cue); margin-right: 6px; }
+.edit-row { display: flex; gap: 8px; align-items: center; font-size: 13px; color: var(--muted); }
+.edit-row input[type="number"] { width: 64px; padding: 8px; }
+.edit-row .del { margin-left: auto; background: none; border: 0; color: var(--rec); font-weight: 600; }
+.post { font-size: 14px; display: grid; gap: 4px; }
+.post .tags { color: var(--cue); font-weight: 600; word-break: break-word; }
+.warn { background: var(--warn-soft); color: var(--warn); border-radius: 10px; padding: 10px 12px; font-size: 14px; }
+.warn summary { cursor: pointer; font-weight: 600; }
+.warn ul { margin: 8px 0 0; padding-left: 18px; display: grid; gap: 4px; }
+.actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.actions .wide { grid-column: 1 / -1; }
+
+.lib-filter { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+.lib-filter .chip { flex: none; }
+.lib { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.lib li { display: flex; gap: 12px; align-items: center; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+.lib li div { flex: 1; min-width: 0; }
+.lib .type { font-size: 12px; color: var(--rec); font-weight: 600; }
+.lib .say { font-weight: 600; }
+
+.hist { display: grid; gap: 10px; }
+.hist-item { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+.hist-item > button { width: 100%; text-align: left; background: none; border: 0; padding: 12px; display: grid; gap: 2px; }
+.hist-item .meta { font: 500 11px var(--f-mono); color: var(--muted); }
+.hist-item .say { font-weight: 600; }
+.hist-item .sub { font-size: 13px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hist-body { padding: 0 8px 8px; display: grid; gap: 8px; }
+.hist-body .card { border: 0; padding: 8px; }
+.confirm { display: flex; gap: 8px; align-items: center; justify-content: flex-end; font-size: 14px; padding: 4px 8px; }
+.empty { text-align: center; color: var(--muted); padding: 32px 0; }
+
+.prompter { position: fixed; inset: 0; z-index: 50; background: #000; color: #f5f5f5; display: flex; flex-direction: column;
+  padding: calc(16px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) env(safe-area-inset-bottom, 0px) max(16px, env(safe-area-inset-left, 0px)); }
+.prompter .bar { display: flex; justify-content: space-between; align-items: center; font: 500 13px var(--f-mono); color: #a0a0a0; }
+.prompter .bar button { background: none; border: 1px solid #444; color: #f5f5f5; border-radius: 8px; padding: 8px 12px; font-weight: 600; }
+.prompter .stage { position: relative; flex: 1; display: flex; align-items: center; justify-content: center; text-align: center; }
+.prompter .stage p { margin: 0; font: 800 clamp(30px, 8vw, 56px)/1.15 var(--f-display); text-wrap: balance; pointer-events: none; }
+.prompter .stage small { display: block; margin-top: 20px; font: 400 15px var(--f-body); color: #8a8a8a; pointer-events: none; }
+.prompter .tap { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 2fr; }
+.prompter .tap button { background: none; border: 0; }
+.prompter .progress { height: 4px; background: #222; margin-bottom: 12px; }
+.prompter .progress i { display: block; height: 100%; background: #ff5c61; transition: width .2s; }
+@media (prefers-reduced-motion: reduce) { .prompter .progress i { transition: none; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><h1>Guiones TikTok</h1><span class="rec">REC</span></div>
+    <nav class="tabs" role="tablist">
+      <button role="tab" data-tab="crear" aria-selected="true">Crear</button>
+      <button role="tab" data-tab="arreglar" aria-selected="false">Arreglar</button>
+      <button role="tab" data-tab="ganchos" aria-selected="false">Ganchos</button>
+      <button role="tab" data-tab="historial" aria-selected="false">Historial</button>
+    </nav>
+  </header>
+
+  <section id="p-crear">
+    <form id="f-crear">
+      <div class="field">
+        <label class="label" for="c-tema">Tema o producto</label>
+        <textarea id="c-tema" class="input" required>Cómo ahorrar en el súper sin dejar de comer bien</textarea>
+      </div>
+      <div class="field">
+        <label class="label" for="c-nicho">Nicho</label>
+        <select id="c-nicho" class="input"></select>
+        <input id="c-nicho-otro" class="input" placeholder="Escribe tu nicho" hidden>
+      </div>
+      <div class="field">
+        <label class="label" for="c-publico">Público objetivo</label>
+        <input id="c-publico" class="input" required value="Mamás que trabajan y hacen las compras de la semana">
+      </div>
+      <div class="field"><span class="label">Tono</span><div class="chips" data-group="c-tono"></div></div>
+      <div class="field"><span class="label">Duración del video</span><div class="seg" data-group="c-duracion"></div></div>
+      <div class="field">
+        <label class="label" for="c-cantidad">¿Cuántos guiones de esta idea?</label>
+        <div class="count"><input type="range" id="c-cantidad" min="1" max="10" value="3"><output id="c-cantidad-out">3</output></div>
+        <p class="hint">Cada guion trae un enfoque distinto, 5 ganchos y 3 cierres para elegir.</p>
+      </div>
+      <div class="field">
+        <button type="button" class="link" id="c-tipos-toggle">▸ Tipos de gancho (elige la IA)</button>
+        <div class="chips" id="c-tipos" hidden></div>
+      </div>
+      <button class="btn rec-btn" id="c-enviar">Generar guiones</button>
+    </form>
+  </section>
+
+  <section id="p-arreglar" hidden>
+    <form id="f-arreglar">
+      <div class="field">
+        <label class="label" for="a-texto">Tu texto</label>
+        <textarea id="a-texto" class="input" style="min-height:180px" required placeholder="Pega aquí tu idea o tu guion. Lo dejo más corto, simple y fácil de decir."></textarea>
+      </div>
+      <div class="field"><span class="label">Tono</span><div class="chips" data-group="a-tono"></div></div>
+      <div class="field"><span class="label">Duración del video</span><div class="seg" data-group="a-duracion"></div></div>
+      <button class="btn rec-btn" id="a-enviar">Arreglar texto</button>
+    </form>
+  </section>
+
+  <section id="p-ganchos" hidden>
+    <div style="display:grid;gap:12px">
+      <p class="hint" id="lib-intro"></p>
+      <div class="lib-filter" id="lib-filter"></div>
+      <ul class="lib" id="lib-list"></ul>
+    </div>
+  </section>
+
+  <section id="p-historial" hidden><div class="hist" id="hist"></div></section>
+
+  <div id="estado" hidden></div>
+  <div class="results" id="resultados"></div>
+</div>
+
+<script>
+// ---------- Biblioteca de ganchos ----------
+const TIPOS = ["Pregunta directa","Error común","Secreto","Dato impactante","POV","Lista","Antes y después","Opinión impopular","Curiosidad incompleta","Llamado directo","Historia personal","Mito o verdad","Advertencia","Reto","Comparación","Paso a paso"];
+const GANCHOS = [
+  ["Pregunta directa","¿Sabías que [dato sobre tema]?"],["Pregunta directa","¿Por qué nadie habla de [tema]?"],["Pregunta directa","¿Te pasa que [problema]?"],["Pregunta directa","¿Qué pasaría si [situación]?"],
+  ["Error común","Deja de hacer esto si quieres [resultado]"],["Error común","El error que casi todos cometen con [tema]"],["Error común","Si haces esto con [tema], lo estás haciendo mal"],["Error común","Yo también hacía esto mal con [tema]"],
+  ["Secreto","Nadie te dice esto sobre [tema]"],["Secreto","Lo que [expertos] no quieren que sepas"],["Secreto","El truco que uso para [resultado]"],["Secreto","Esto debí saberlo hace años"],
+  ["Dato impactante","[Número] de cada 10 personas hacen esto mal"],["Dato impactante","Esto cambia todo lo que sabes de [tema]"],["Dato impactante","En [tiempo] logré [resultado], así lo hice"],["Dato impactante","Gasté [cantidad] para aprender esto. Tú gratis"],
+  ["POV","POV: acabas de descubrir [cosa]"],["POV","POV: por fin entiendes [tema]"],["POV","POV: eres [público] y te pasa esto"],["POV","POV: alguien te explica [tema] fácil"],
+  ["Lista","3 cosas que nadie te dijo de [tema]"],["Lista","3 errores que te impiden [resultado]"],["Lista","5 cosas que hago antes de [acción]"],["Lista","2 trucos para [resultado] hoy mismo"],
+  ["Antes y después","Así estaba… así quedó"],["Antes y después","Antes hacía [cosa]. Ahora hago esto"],["Antes y después","Mira la diferencia con un solo cambio"],["Antes y después","Hace un año [situación]. Hoy [resultado]"],
+  ["Opinión impopular","Opinión impopular: [idea]"],["Opinión impopular","Esto que te enseñaron sobre [tema] no funciona"],["Opinión impopular","Me van a odiar por decir esto"],["Opinión impopular","[Cosa popular] no sirve. Te explico por qué"],
+  ["Curiosidad incompleta","Lo que pasó después nadie lo esperaba"],["Curiosidad incompleta","Probé [cosa] por [tiempo] y pasó esto"],["Curiosidad incompleta","Mira hasta el final, no te lo vas a creer"],["Curiosidad incompleta","Esto es lo último que esperas de [tema]"],
+  ["Llamado directo","Si tienes [problema], mira esto"],["Llamado directo","Si eres [público], esto es para ti"],["Llamado directo","Guarda este video si quieres [resultado]"],["Llamado directo","No sigas bajando si te importa [tema]"],
+  ["Historia personal","El día que [situación], todo cambió"],["Historia personal","Casi me rindo con [tema], hasta que…"],["Historia personal","Te cuento cómo pasé de [antes] a [después]"],["Historia personal","Nunca pensé que [cosa] me pasaría a mí"],
+  ["Mito o verdad","¿Mito o verdad? [creencia]"],["Mito o verdad","Esto que crees de [tema] es mentira"],["Mito o verdad","Te dijeron [creencia]. No es así"],
+  ["Advertencia","No compres [cosa] sin ver esto"],["Advertencia","Cuidado con [cosa], te puede costar caro"],["Advertencia","Antes de [acción], mira este video"],
+  ["Reto","Te reto a [acción] por [tiempo]"],["Reto","A que no sabías hacer esto con [cosa]"],["Reto","Solo el 1% sabe esto de [tema]"],
+  ["Comparación","[Opción A] o [opción B]: ¿cuál conviene?"],["Comparación","Lo barato contra lo caro: [cosa]"],["Comparación","Lo que hace la mayoría vs. lo que funciona"],
+  ["Paso a paso","Cómo [resultado] en [número] pasos"],["Paso a paso","Así se hace [cosa] en menos de un minuto"],["Paso a paso","La forma más fácil de [acción]"],
+].map(([tipo, texto]) => ({ tipo, texto }));
+
+// ---------- Palabras complicadas ----------
+const DIFICILES = {
+  utilizar:"usar", adquirir:"comprar", obtener:"conseguir", realizar:"hacer", efectuar:"hacer", ejecutar:"hacer",
+  implementar:"poner en práctica", optimizar:"mejorar", potenciar:"hacer crecer", maximizar:"sacar más", minimizar:"bajar",
+  incrementar:"subir", disminuir:"bajar", proporcionar:"dar", brindar:"dar", facilitar:"hacer más fácil", requerir:"necesitar",
+  solicitar:"pedir", visualizar:"ver", finalizar:"terminar", gestionar:"manejar", monetizar:"ganar dinero con", apalancar:"aprovechar",
+  empoderar:"dar fuerza", "óptimo":"mejor", primordial:"lo más importante", imprescindible:"necesario", fundamental:"muy importante",
+  significativo:"grande", exhaustivo:"completo", inherente:"propio", "intrínseco":"propio", "holístico":"completo", disruptivo:"nuevo",
+  escalable:"que puede crecer", proactivo:"que se adelanta", resiliencia:"aguante", sinergia:"trabajo en equipo", paradigma:"forma de pensar",
+  "metodología":"forma", vanguardia:"lo más nuevo", posteriormente:"después", previamente:"antes", asimismo:"también", "no obstante":"pero",
+  "por consiguiente":"por eso", "en consecuencia":"por eso", mediante:"con", aproximadamente:"más o menos", frecuentemente:"seguido",
+  actualmente:"hoy", "con el fin de":"para", "en aras de":"para", "cabe destacar":"ojo", "es menester":"hay que", engagement:"interacción",
+  mindset:"forma de pensar", insight:"idea", funnel:"embudo de ventas", branding:"imagen de marca", growth:"crecimiento", feedback:"opinión", target:"público",
+};
+const sinAcentos = (s) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+function buscarDificiles(texto) {
+  const t = ` ${sinAcentos(texto).replace(/[^a-z0-9ñ]+/g, " ")} `;
+  return Object.keys(DIFICILES).filter((p) => {
+    const raiz = sinAcentos(p);
+    const verbo = /(ar|er|ir)$/.test(raiz) && !raiz.includes(" ");
+    return verbo ? new RegExp(` ${raiz.slice(0, -2)}[a-z]{0,6} `).test(t) : t.includes(` ${raiz} `);
+  });
+}
+
+// ---------- Reglas ----------
+const PAL_POR_SEG = 2.5, MAX_GANCHO = 12, MAX_FRASE = 10, SEG_GANCHO = 3, SEG_CIERRE = 3;
+const contar = (t) => String(t).split(/\s+/).filter((p) => /[\p{L}\p{N}]/u.test(p)).length;
+const frases = (t) => String(t).split(/[.!?…]+/).map((f) => f.trim()).filter(Boolean);
+const palabrasObjetivo = (d) => Math.round(d * PAL_POR_SEG);
+const segCuerpo = (d) => d - SEG_GANCHO - SEG_CIERRE;
+const hablado = (g, h = 0, c = 0) => [g.ganchos[h]?.texto, ...g.escenas.map((e) => e.texto), g.cierres[c]].filter(Boolean).join(" ");
+
+function revisar(g, duracion, tiposDistintos = true) {
+  const p = [];
+  if (g.ganchos.length !== 5) p.push(`Debe tener 5 ganchos y tiene ${g.ganchos.length}.`);
+  const tipos = new Set(g.ganchos.map((x) => x.tipo.toLowerCase()));
+  if (tiposDistintos && tipos.size < g.ganchos.length) p.push("Hay ganchos repetidos del mismo tipo.");
+  g.ganchos.forEach((x, i) => {
+    const n = contar(x.texto);
+    if (n > MAX_GANCHO) p.push(`Gancho ${i + 1} tiene ${n} palabras (máximo ${MAX_GANCHO}): "${x.texto}"`);
+    if (/^(hola|hey|buenas|qué tal)\b/i.test(x.texto.trim())) p.push(`Gancho ${i + 1} empieza con un saludo.`);
+  });
+  if (g.cierres.length !== 3) p.push(`Debe tener 3 cierres y tiene ${g.cierres.length}.`);
+  g.escenas.forEach((e, i) => {
+    if (e.duracion < 2 || e.duracion > 4) p.push(`Escena ${i + 1} dura ${e.duracion} s (debe durar de 2 a 4 s).`);
+    for (const f of frases(e.texto)) {
+      const n = contar(f);
+      if (n > MAX_FRASE) p.push(`Escena ${i + 1}: frase de ${n} palabras (máximo ${MAX_FRASE}): "${f}"`);
+    }
+  });
+  const cuerpo = g.escenas.reduce((s, e) => s + e.duracion, 0), esperado = segCuerpo(duracion);
+  if (Math.abs(cuerpo - esperado) > Math.max(3, esperado * 0.2)) p.push(`Las escenas suman ${cuerpo} s y deberían sumar unos ${esperado} s.`);
+  const total = contar(hablado(g)), maximo = Math.round(palabrasObjetivo(duracion) * 1.15);
+  if (total > maximo) p.push(`Tiene ${total} palabras: no se alcanza a decir en ${duracion} s (máximo ${maximo}).`);
+  const dif = buscarDificiles([...g.ganchos.map((x) => x.texto), ...g.escenas.map((e) => e.texto), ...g.cierres].join(" "));
+  if (dif.length) p.push(`Cambia estas palabras por otras más simples: ${dif.join(", ")}.`);
+  return p;
+}
+
+// Acepta solo la forma esperada y limpia detalles menores.
+function limpiar(d) {
+  const lista = Array.isArray(d?.guiones) ? d.guiones : null;
+  if (!lista || !lista.length) throw { code: "forma" };
+  return lista.map((g) => {
+    if (!Array.isArray(g?.ganchos) || !Array.isArray(g?.escenas) || !Array.isArray(g?.cierres)) throw { code: "forma" };
+    return {
+      angulo: String(g.angulo ?? ""),
+      ganchos: g.ganchos.map((x) => ({ tipo: String(x?.tipo ?? ""), texto: String(x?.texto ?? "") })),
+      escenas: g.escenas.map((e) => ({ texto: String(e?.texto ?? ""), duracion: Number(e?.duracion) || 3, descripcion_visual: String(e?.descripcion_visual ?? "") })),
+      cierres: g.cierres.map(String),
+      hashtags: [...new Set((Array.isArray(g.hashtags) ? g.hashtags : []).map((h) => "#" + String(h).replace(/^#+/, "").replace(/\s+/g, "")))].filter((h) => h.length > 1),
+      descripcion_post: String(g.descripcion_post ?? ""),
+    };
+  });
+}
+
+// ---------- Prompt interno ----------
+const biblioteca = () => TIPOS.map((t) => `- ${t}: ` + GANCHOS.filter((g) => g.tipo === t).map((g) => `"${g.texto}"`).join(" | ")).join("\n");
+const listaDificiles = () => Object.entries(DIFICILES).map(([a, b]) => `"${a}" → "${b}"`).join(", ");
+
+const SISTEMA = `Eres guionista de videos cortos para TikTok, Reels y Shorts en español latino.
+Escribes textos para que una persona los DIGA a cámara, no para leerlos. Tus guiones detienen el scroll y hacen que la gente vea hasta el final.
+
+# Reglas de lenguaje (las más importantes)
+- Usa solo palabras que entiende un niño de 12 años en cualquier país de Latinoamérica.
+- Nada de palabras rebuscadas, técnicas, de oficina o en inglés. Si existe una palabra más común, usa la común.
+- Nada de dobles sentidos, insinuaciones, ironías difíciles ni juegos de palabras. Cada frase significa una sola cosa.
+- Nada de palabras con significado complicado o que haya que explicar. Si el tema obliga a usar una, explícala en la misma frase con palabras simples.
+- Frases cortas que se digan de un solo aire: máximo ${MAX_FRASE} palabras por frase.
+- Una idea por frase. Habla de "tú", como a un amigo.
+- Evita juntar palabras difíciles de pronunciar seguidas.
+- Evita estas palabras y usa su reemplazo: ${listaDificiles()}.
+
+# Estructura del guion
+1. GANCHO (0 a ${SEG_GANCHO} s): frase que detiene el scroll. Máximo ${MAX_GANCHO} palabras. Sin saludos, sin presentarte, sin introducción: entra directo.
+2. CUERPO: escenas de 2 a 4 segundos. Una sola idea por escena. Explicación sencilla, en orden, que cumpla lo que prometió el gancho.
+3. CIERRE DE RETENCIÓN (últimos ${SEG_CIERRE} s): invita a seguir viendo, guardar, seguir la cuenta o ver la parte 2. Al menos uno de los cierres debe conectar con el gancho para que el video se repita en loop.
+
+# Biblioteca de ganchos (tipos y ejemplos)
+Usa estos modelos como base y adáptalos al tema. Rellena los corchetes; no los dejes en el texto.
+${biblioteca()}
+
+# Formato de cada guion
+- "angulo": en pocas palabras, el enfoque de este guion (sirve para distinguirlo de los demás).
+- "ganchos": 5 opciones, cada una de un tipo DISTINTO. "tipo" es el nombre exacto del tipo en la biblioteca.
+- "escenas": cada una con "texto" (lo que se dice), "duracion" (segundos, de 2 a 4) y "descripcion_visual" (qué mostrar o hacer en cámara mientras se dice, en una frase simple).
+- "cierres": 3 opciones distintas.
+- "hashtags": de 4 a 6, mezcla de generales y del nicho, sin espacios.
+- "descripcion_post": texto corto para publicar, de 1 o 2 frases, con una pregunta que invite a comentar.
+- El gancho y el cierre NO van dentro de "escenas".
+
+Antes de responder, revisa cada frase: si una palabra no la usaría un niño de 12 años, cámbiala.
+
+Responde SOLO con un objeto JSON, sin texto antes ni después, con esta forma:
+{"guiones":[{"angulo":"...","ganchos":[{"tipo":"...","texto":"..."}],"escenas":[{"texto":"...","duracion":3,"descripcion_visual":"..."}],"cierres":["..."],"hashtags":["#..."],"descripcion_post":"..."}]}`;
+
+const reglasDuracion = (d) => `Duración: ${d} s. El cuerpo debe sumar unos ${segCuerpo(d)} s y el guion completo (gancho + escenas + cierre) unas ${palabrasObjetivo(d)} palabras en total.`;
+
+function promptCrear(e) {
+  const tipos = e.tiposGancho.length
+    ? `Usa solo estos tipos de gancho (si hay menos de 5, repite tipos con enfoques distintos): ${e.tiposGancho.join(", ")}.`
+    : "Elige los 5 tipos de gancho que mejor funcionen para este tema.";
+  const variedad = e.cantidad > 1
+    ? `Escribe ${e.cantidad} guiones DISTINTOS sobre la misma idea. Cada uno con un ángulo diferente (otro problema, otro ejemplo, otro beneficio u otro error), no la misma explicación con otras palabras.`
+    : "Escribe 1 guion.";
+  return `${SISTEMA}\n\n# Pedido\n${variedad}\n\nTema o producto: ${e.tema}\nNicho: ${e.nicho}\nPúblico objetivo: ${e.publico}\nTono: ${e.tono}\n${reglasDuracion(e.duracion)}\n${tipos}`;
+}
+
+function promptArreglar(e) {
+  return `${SISTEMA}\n\n# Pedido\nArregla este texto para convertirlo en 1 guion para video corto.
+- Conserva la idea y la información del texto original. No inventes datos nuevos.
+- Hazlo más sencillo de decir y de entender: cambia palabras rebuscadas por palabras comunes, quita dobles sentidos y corta las frases largas.
+- Quita lo que sobra para que quepa en la duración.
+- Escribe 5 ganchos y 3 cierres nuevos que encajen con el texto.
+
+Tono: ${e.tono}\n${reglasDuracion(e.duracion)}\n\nTexto original:\n"""\n${e.texto}\n"""`;
+}
+
+function promptCorreccion(problemas, cantidad) {
+  const detalle = problemas.map((p, i) => p.length ? `Guion ${i + 1}:\n- ${p.join("\n- ")}` : `Guion ${i + 1}: está bien, déjalo igual.`).join("\n\n");
+  return `Algunos guiones no cumplen las reglas. Corrige solo lo que se indica y devuelve TODOS los guiones otra vez, en el mismo orden y con el mismo formato JSON. Deben ser exactamente ${cantidad}.\n\n${detalle}`;
+}
+
+// ---------- Utilidades ----------
+const $ = (s, r = document) => r.querySelector(s);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const mmss = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+const segTotal = (g) => SEG_GANCHO + g.escenas.reduce((s, e) => s + e.duracion, 0) + SEG_CIERRE;
+
+function guionATexto(g, h = 0, c = 0) {
+  return [
+    `GANCHO (${g.ganchos[h]?.tipo ?? ""}): ${g.ganchos[h]?.texto ?? ""}`, "",
+    ...g.escenas.map((e, i) => `${i + 1}. ${e.texto}\n   [${e.duracion} s · ${e.descripcion_visual}]`), "",
+    `CIERRE: ${g.cierres[c] ?? ""}`, "",
+    `Duración aprox.: ${segTotal(g)} s · ${contar(hablado(g, h, c))} palabras`, "",
+    `Descripción: ${g.descripcion_post}`, g.hashtags.join(" "),
+  ].join("\n");
+}
+const variantesAB = (g, c = 0) => g.ganchos.map((_, i) => `===== VERSIÓN ${String.fromCharCode(65 + i)} =====\n${guionATexto(g, i, c)}`).join("\n\n");
+
+async function copiar(btn, texto) {
+  const original = btn.textContent;
+  try {
+    await navigator.clipboard.writeText(texto);
+    btn.textContent = "¡Copiado!";
+  } catch {
+    // Sin portapapeles: mostrar el texto seleccionado para copiarlo a mano.
+    const ta = document.createElement("textarea");
+    ta.className = "input"; ta.value = texto; ta.rows = 8; ta.readOnly = true;
+    btn.after(ta); ta.select();
+    btn.textContent = "Selecciona y copia";
+  }
+  setTimeout(() => (btn.textContent = original), 1600);
+}
+
+// ---------- Capacidades (Claude e historial) ----------
+let sampleFn = null, db = null, uid = null;
+const listo = (async () => {
+  if (!window.claude?.use) return;
+  const [s, d, u] = await Promise.all([claude.use("sample"), claude.use("db"), claude.use("user")]);
+  sampleFn = s;
+  const id = u ? await u.id() : null;
+  if (d && id) { db = d; uid = id; }
+})();
+
+const LOCAL = "guiones-historial";
+const leerLocal = () => { try { return JSON.parse(localStorage.getItem(LOCAL) || "[]"); } catch { return []; } };
+const escribirLocal = (xs) => { try { localStorage.setItem(LOCAL, JSON.stringify(xs.slice(0, 100))); } catch {} };
+const coleccion = () => db.collection("data/users/" + uid);
+
+async function guardarHistorial(modo, entrada, guiones, duracion) {
+  const ahora = new Date().toISOString();
+  const items = guiones.map((guion) => ({ id: crypto.randomUUID().replace(/-/g, ""), created_at: ahora, modo, entrada, duracion, guion }));
+  if (db) {
+    for (const it of items) { try { await coleccion().doc(it.id).set(it); } catch (e) { console.warn("historial", e); } }
+  } else escribirLocal([...items, ...leerLocal()]);
+}
+
+async function leerHistorial() {
+  if (db) {
+    const snap = await coleccion().orderBy("created_at", "desc").limit(100).get();
+    return snap.docs.map((d) => d.data());
+  }
+  return leerLocal();
+}
+
+async function borrarHistorial(id) {
+  if (db) await coleccion().doc(id).delete();
+  else escribirLocal(leerLocal().filter((x) => x.id !== id));
+}
+
+const MENSAJES = {
+  not_granted: "No diste permiso para usar Claude en esta página. Ábrela de nuevo y acepta el permiso.",
+  sampling_disabled: "Claude no está disponible en tu cuenta.",
+  rate_limited: "Hiciste muchos pedidos seguidos o llegaste a tu límite de uso. Espera un rato y vuelve a intentar.",
+  session_expired: "Tu sesión se cerró. Vuelve a iniciar sesión en Claude.",
+  refused: "Claude no quiso escribir sobre este tema. Prueba con otro enfoque.",
+  invalid_json: "La respuesta llegó incompleta. Intenta de nuevo o pide menos guiones.",
+  forma: "La respuesta llegó incompleta. Intenta de nuevo o pide menos guiones.",
+  prompt_too_large: "El texto es muy largo. Pega una parte más corta.",
+  sin_claude: "Esta página necesita abrirse dentro de Claude para escribir guiones.",
+};
+const mensajeError = (e) => MENSAJES[e?.code] || "Algo salió mal. Intenta de nuevo.";
+
+// Pide los guiones, revisa las reglas y, si algo falla, pide una corrección.
+let control = null;
+async function generar(prompt, { duracion, cantidad, tiposDistintos }) {
+  await listo;
+  if (!sampleFn) throw { code: "sin_claude" };
+  control = new AbortController();
+  const progreso = ({ text }) => {
+    const n = (text.match(/"angulo"/g) || []).length;
+    mostrarEstado(cantidad > 1 && n ? `Escribiendo guion ${Math.min(n, cantidad)} de ${cantidad}…` : "Escribiendo…", true);
+  };
+  const opciones = { cache: false, signal: control.signal, onText: progreso };
+  const primera = await sampleFn.json(prompt, opciones);
+  let guiones = limpiar(primera);
+  let problemas = guiones.map((g) => revisar(g, duracion, tiposDistintos));
+  const total = (ps) => ps.reduce((s, p) => s + p.length, 0);
+
+  if (guiones.length !== cantidad || total(problemas) > 0) {
+    mostrarEstado("Revisando que todo sea fácil de decir…", true);
+    try {
+      const turnos = [
+        { role: "user", content: prompt },
+        { role: "assistant", content: JSON.stringify(primera) },
+        { role: "user", content: promptCorreccion(problemas, cantidad) },
+      ];
+      const otra = limpiar(await sampleFn.json(turnos, { cache: false, signal: control.signal }));
+      const otrosProblemas = otra.map((g) => revisar(g, duracion, tiposDistintos));
+      if (total(otrosProblemas) <= total(problemas)) { guiones = otra; problemas = otrosProblemas; }
+    } catch (e) {
+      if (e?.code === "cancelled") throw e;
+      // Si la corrección falla, se queda la primera versión con sus avisos.
+    }
+  }
+  return guiones.slice(0, cantidad);
+}
+
+// ---------- Estado de la interfaz ----------
+const estado = { resultados: [], ejemplo: true };
+
+function mostrarEstado(texto, conParar) {
+  const el = $("#estado");
+  el.hidden = false;
+  el.innerHTML = `<div class="status"><span>${esc(texto)}</span>${conParar ? '<button type="button" class="btn-sec" id="parar">Parar</button>' : ""}</div>`;
+  $("#parar")?.addEventListener("click", () => control?.abort());
+}
+function mostrarError(texto) { const el = $("#estado"); el.hidden = false; el.innerHTML = `<div class="error">${esc(texto)}</div>`; }
+function ocultarEstado() { $("#estado").hidden = true; }
+
+function grupoChips(nombre, valores, inicial, fmt = (v) => v) {
+  const cont = $(`[data-group="${nombre}"]`);
+  cont.innerHTML = valores.map((v) => `<button type="button" class="chip" data-v="${esc(v)}" aria-pressed="${v === inicial}">${esc(fmt(v))}</button>`).join("");
+  cont.addEventListener("click", (e) => {
+    const b = e.target.closest(".chip"); if (!b) return;
+    cont.querySelectorAll(".chip").forEach((x) => x.setAttribute("aria-pressed", x === b));
+  });
+  return () => cont.querySelector('[aria-pressed="true"]').dataset.v;
+}
+
+const TONOS = ["Directo", "Divertido", "Misterioso", "Polémico"];
+const NICHOS = ["Ventas","Motivación","Curiosidades","Tecnología","Finanzas personales","Salud y bienestar","Comida","Educación","Emprendimiento","Belleza","Otro"];
+const tonoC = grupoChips("c-tono", TONOS, "Directo");
+const durC = grupoChips("c-duracion", ["15", "30", "60"], "30", (v) => `${v} s`);
+const tonoA = grupoChips("a-tono", TONOS, "Directo");
+const durA = grupoChips("a-duracion", ["15", "30", "60"], "30", (v) => `${v} s`);
+
+$("#c-nicho").innerHTML = NICHOS.map((n) => `<option${n === "Finanzas personales" ? " selected" : ""}>${n}</option>`).join("");
+$("#c-nicho").addEventListener("change", (e) => { $("#c-nicho-otro").hidden = e.target.value !== "Otro"; });
+$("#c-cantidad").addEventListener("input", (e) => { $("#c-cantidad-out").textContent = e.target.value; actualizarBotonCrear(); });
+const actualizarBotonCrear = () => { const n = +$("#c-cantidad").value; $("#c-enviar").textContent = n > 1 ? `Generar ${n} guiones` : "Generar guion"; };
+actualizarBotonCrear();
+
+const tiposSel = new Set();
+$("#c-tipos").innerHTML = TIPOS.map((t) => `<button type="button" class="chip" data-v="${esc(t)}" aria-pressed="false">${esc(t)}</button>`).join("");
+$("#c-tipos").addEventListener("click", (e) => {
+  const b = e.target.closest(".chip"); if (!b) return;
+  const t = b.dataset.v; tiposSel.has(t) ? tiposSel.delete(t) : tiposSel.add(t);
+  b.setAttribute("aria-pressed", tiposSel.has(t));
+  rotuloTipos();
+});
+const rotuloTipos = () => { $("#c-tipos-toggle").textContent = `${$("#c-tipos").hidden ? "▸" : "▾"} Tipos de gancho ${tiposSel.size ? `(${tiposSel.size} elegidos)` : "(elige la IA)"}`; };
+$("#c-tipos-toggle").addEventListener("click", () => { $("#c-tipos").hidden = !$("#c-tipos").hidden; rotuloTipos(); });
+
+async function enviar(form, boton, fn) {
+  boton.disabled = true;
+  mostrarEstado("Pensando el guion… puede tardar hasta un minuto.", true);
+  try {
+    await fn();
+    ocultarEstado();
+  } catch (e) {
+    if (e?.code === "cancelled") ocultarEstado(); else mostrarError(mensajeError(e));
+  } finally {
+    boton.disabled = false;
+  }
+}
+
+$("#f-crear").addEventListener("submit", (ev) => {
+  ev.preventDefault();
+  const nicho = $("#c-nicho").value === "Otro" ? $("#c-nicho-otro").value.trim() || "General" : $("#c-nicho").value;
+  const entrada = {
+    tema: $("#c-tema").value.trim(), nicho, publico: $("#c-publico").value.trim(), tono: tonoC(),
+    duracion: +durC(), cantidad: +$("#c-cantidad").value, tiposGancho: [...tiposSel],
+  };
+  enviar(ev.target, $("#c-enviar"), async () => {
+    const tiposDistintos = !entrada.tiposGancho.length || entrada.tiposGancho.length >= 5;
+    const guiones = await generar(promptCrear(entrada), { duracion: entrada.duracion, cantidad: entrada.cantidad, tiposDistintos });
+    mostrarResultados(guiones, entrada.duracion);
+    guardarHistorial("crear", entrada, guiones, entrada.duracion);
+  });
+});
+
+$("#f-arreglar").addEventListener("submit", (ev) => {
+  ev.preventDefault();
+  const entrada = { texto: $("#a-texto").value.trim(), tono: tonoA(), duracion: +durA() };
+  if (entrada.texto.length < 10) return mostrarError("Pega un texto un poco más largo.");
+  enviar(ev.target, $("#a-enviar"), async () => {
+    const guiones = await generar(promptArreglar(entrada), { duracion: entrada.duracion, cantidad: 1, tiposDistintos: true });
+    mostrarResultados(guiones, entrada.duracion);
+    guardarHistorial("arreglar", entrada, guiones, entrada.duracion);
+  });
+});
+
+// ---------- Tarjeta de guion ----------
+function nuevoResultado(g, duracion) { return { g: structuredClone(g), duracion, h: 0, c: 0, editando: false }; }
+
+function htmlTarjeta(r, num) {
+  const { g } = r, total = segTotal(g), cuerpo = total - SEG_GANCHO - SEG_CIERRE;
+  const ed = r.editando;
+  const avisos = revisar(g, r.duracion, false);
+  return `
+  <div class="card-head">
+    <div><div class="eyebrow">Guion ${num}</div><h3>${esc(g.angulo || "Guion")}</h3></div>
+    <div class="stats" data-stats>~${total} s<br>${contar(hablado(g, r.h, r.c))} palabras</div>
+  </div>
+  <div>
+    <div class="timeline" aria-label="Línea de tiempo del video">
+      <span class="tl-hook" style="flex:${SEG_GANCHO}" title="Gancho"></span>
+      <span class="tl-body" style="flex:${Math.max(cuerpo, 1)}">CUERPO · ${g.escenas.length} escenas</span>
+      <span class="tl-end" style="flex:${SEG_CIERRE}" title="Cierre"></span>
+    </div>
+    <div class="tl-scale"><span>0:00 gancho</span><span>0:03</span><span>cierre ${mmss(total - SEG_CIERRE)}–${mmss(total)}</span></div>
+  </div>
+  <div>
+    <p class="section-title">Elige el gancho <span class="tc">0–3 s</span></p>
+    <div class="options">${g.ganchos.map((x, i) => `
+      <label class="option"><input type="radio" name="h-${num}" data-act="h" data-i="${i}" ${i === r.h ? "checked" : ""}>
+        <span class="type">${esc(x.tipo)}</span>
+        ${ed ? `<input class="input say" data-edit="gancho" data-i="${i}" value="${esc(x.texto)}">` : `<span class="say">${esc(x.texto)}</span>`}
+      </label>`).join("")}
+    </div>
+  </div>
+  <div>
+    <p class="section-title">Cuerpo <span class="tc">3–${total - SEG_CIERRE} s</span></p>
+    <ol class="scenes">${g.escenas.map((e, i) => ed ? `
+      <li class="scene">
+        <textarea class="input" data-edit="escena" data-i="${i}" rows="2">${esc(e.texto)}</textarea>
+        <div class="edit-row"><input type="number" class="input" min="2" max="4" data-edit="dur" data-i="${i}" value="${e.duracion}"> seg
+          <button type="button" class="del" data-act="quitar" data-i="${i}">Quitar</button></div>
+      </li>` : `
+      <li class="scene"><span class="say">${esc(e.texto)}</span><span class="shot"><b>${e.duracion} s</b>${esc(e.descripcion_visual)}</span></li>`).join("")}
+    </ol>
+    ${ed ? '<button type="button" class="btn-sec" style="margin-top:8px;width:100%" data-act="agregar">Agregar escena</button>' : ""}
+  </div>
+  <div>
+    <p class="section-title">Elige el cierre <span class="tc">últimos 3 s</span></p>
+    <div class="options">${g.cierres.map((c, i) => `
+      <label class="option cierre"><input type="radio" name="c-${num}" data-act="c" data-i="${i}" ${i === r.c ? "checked" : ""}>
+        ${ed ? `<input class="input say" style="grid-column:2" data-edit="cierre" data-i="${i}" value="${esc(c)}">` : `<span class="say" style="grid-column:2;grid-row:1">${esc(c)}</span>`}
+      </label>`).join("")}
+    </div>
+  </div>
+  <div class="post"><span>${esc(g.descripcion_post)}</span><span class="tags">${esc(g.hashtags.join(" "))}</span></div>
+  <div data-avisos>${htmlAvisos(avisos)}</div>
+  <div class="actions">
+    <button type="button" class="btn rec-btn wide" data-act="grabar">Modo grabar</button>
+    <button type="button" class="btn-sec" data-act="editar">${ed ? "Listo" : "Editar"}</button>
+    <button type="button" class="btn-sec" data-act="copiar">Copiar guion</button>
+    <button type="button" class="btn-sec wide" data-act="ab">Copiar 5 versiones A/B</button>
+  </div>`;
+}
+
+const htmlAvisos = (a) => a.length ? `<details class="warn"><summary>${a.length} aviso${a.length > 1 ? "s" : ""} para revisar</summary><ul>${a.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></details>` : "";
+
+function montarTarjeta(cont, r, num) {
+  const el = document.createElement("article");
+  el.className = "card";
+  const pintar = () => (el.innerHTML = htmlTarjeta(r, num));
+  const refrescar = () => {
+    el.querySelector("[data-avisos]").innerHTML = htmlAvisos(revisar(r.g, r.duracion, false));
+    el.querySelector("[data-stats]").innerHTML = `~${segTotal(r.g)} s<br>${contar(hablado(r.g, r.h, r.c))} palabras`;
+  };
+  el.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-act]"); if (!b) return;
+    const i = +b.dataset.i, act = b.dataset.act;
+    if (act === "h") { r.h = i; refrescar(); }
+    else if (act === "c") { r.c = i; refrescar(); }
+    else if (act === "editar") { r.editando = !r.editando; pintar(); }
+    else if (act === "quitar") { r.g.escenas.splice(i, 1); pintar(); }
+    else if (act === "agregar") { r.g.escenas.push({ texto: "", duracion: 3, descripcion_visual: "" }); pintar(); }
+    else if (act === "copiar") copiar(b, guionATexto(r.g, r.h, r.c));
+    else if (act === "ab") copiar(b, variantesAB(r.g, r.c));
+    else if (act === "grabar") abrirPrompter(r);
+  });
+  el.addEventListener("input", (e) => {
+    const t = e.target, i = +t.dataset.i;
+    if (t.dataset.edit === "gancho") r.g.ganchos[i].texto = t.value;
+    else if (t.dataset.edit === "cierre") r.g.cierres[i] = t.value;
+    else if (t.dataset.edit === "escena") r.g.escenas[i].texto = t.value;
+    else if (t.dataset.edit === "dur") r.g.escenas[i].duracion = Number(t.value) || 0;
+    else return;
+    refrescar();
+  });
+  pintar();
+  cont.append(el);
+}
+
+function mostrarResultados(guiones, duracion) {
+  estado.ejemplo = false;
+  estado.resultados = guiones.map((g) => nuevoResultado(g, duracion));
+  pintarResultados();
+  $("#resultados").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+}
+
+function pintarResultados() {
+  const cont = $("#resultados");
+  const n = estado.resultados.length;
+  cont.innerHTML = `<h2>${estado.ejemplo ? "Así se ve un guion" : `${n} guion${n > 1 ? "es" : ""} listo${n > 1 ? "s" : ""}`}${estado.ejemplo ? '<span class="sample-tag">EJEMPLO</span>' : ""}</h2>`;
+  estado.resultados.forEach((r, i) => montarTarjeta(cont, r, i + 1));
+}
+
+// ---------- Modo grabar ----------
+function abrirPrompter(r) {
+  const partes = [
+    { et: "Gancho", t: r.g.ganchos[r.h]?.texto ?? "" },
+    ...r.g.escenas.map((e, i) => ({ et: `Escena ${i + 1}`, t: e.texto, n: e.descripcion_visual })),
+    { et: "Cierre", t: r.g.cierres[r.c] ?? "" },
+  ];
+  let i = 0;
+  const el = document.createElement("div");
+  el.className = "prompter";
+  el.setAttribute("role", "dialog");
+  const pintar = () => {
+    const p = partes[i];
+    el.innerHTML = `<div class="progress"><i style="width:${((i + 1) / partes.length) * 100}%"></i></div>
+      <div class="bar"><span>${esc(p.et)} · ${i + 1}/${partes.length}</span><button type="button" data-x>Cerrar</button></div>
+      <div class="stage"><div><p>${esc(p.t)}</p>${p.n ? `<small>${esc(p.n)}</small>` : ""}</div>
+        <div class="tap"><button type="button" aria-label="Anterior" data-d="-1"></button><button type="button" aria-label="Siguiente" data-d="1"></button></div></div>`;
+  };
+  const ir = (d) => { i = Math.min(partes.length - 1, Math.max(0, i + d)); pintar(); };
+  const cerrar = () => { el.remove(); document.removeEventListener("keydown", tecla); lock?.release?.().catch(() => {}); };
+  const tecla = (e) => { if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); ir(1); } if (e.key === "ArrowLeft") ir(-1); if (e.key === "Escape") cerrar(); };
+  el.addEventListener("click", (e) => { if (e.target.closest("[data-x]")) return cerrar(); const d = e.target.closest("[data-d]"); if (d) ir(+d.dataset.d); });
+  document.addEventListener("keydown", tecla);
+  let lock = null;
+  navigator.wakeLock?.request("screen").then((l) => (lock = l)).catch(() => {});
+  pintar();
+  document.body.append(el);
+}
+
+// ---------- Biblioteca ----------
+let filtro = null;
+$("#lib-intro").textContent = `${GANCHOS.length} ganchos de los más usados en TikTok. Cambia lo que está entre [corchetes] por tu tema.`;
+function pintarBiblioteca() {
+  $("#lib-filter").innerHTML = [null, ...TIPOS].map((t) => `<button type="button" class="chip" data-t="${esc(t ?? "")}" aria-pressed="${t === filtro}">${esc(t ?? "Todos")}</button>`).join("");
+  $("#lib-list").innerHTML = GANCHOS.filter((g) => !filtro || g.tipo === filtro).map((g, i) =>
+    `<li><div><div class="type">${esc(g.tipo)}</div><div class="say">${esc(g.texto)}</div></div><button type="button" class="btn-sec" data-copy="${esc(g.texto)}">Copiar</button></li>`).join("");
+}
+$("#lib-filter").addEventListener("click", (e) => { const b = e.target.closest(".chip"); if (!b) return; filtro = b.dataset.t || null; pintarBiblioteca(); });
+$("#lib-list").addEventListener("click", (e) => { const b = e.target.closest("[data-copy]"); if (b) copiar(b, b.dataset.copy); });
+pintarBiblioteca();
+
+// ---------- Historial ----------
+async function pintarHistorial() {
+  const cont = $("#hist");
+  cont.innerHTML = '<p class="empty">Cargando…</p>';
+  await listo;
+  let items;
+  try { items = await leerHistorial(); } catch { cont.innerHTML = '<p class="error">No se pudo leer el historial. Intenta de nuevo.</p>'; return; }
+  if (!items.length) { cont.innerHTML = '<p class="empty">Todavía no hay guiones guardados.<br>Los que generes en Crear o Arreglar aparecen aquí.</p>'; return; }
+  cont.innerHTML = `<p class="hint">${db ? "Guardado en tu cuenta de Claude. Solo tú lo ves." : "Guardado solo en este navegador."}</p>`;
+  for (const it of items) {
+    const item = document.createElement("div");
+    item.className = "hist-item";
+    const fecha = new Date(it.created_at).toLocaleString("es", { dateStyle: "medium", timeStyle: "short" });
+    const sub = String(it.entrada?.tema ?? it.entrada?.texto ?? "").slice(0, 90);
+    item.innerHTML = `<button type="button" data-abrir><span class="meta">${esc(fecha)} · ${it.modo === "crear" ? "Creado" : "Arreglado"} · ${it.duracion} s</span>
+      <span class="say">${esc(it.guion.ganchos[0]?.texto ?? "")}</span><span class="sub">${esc(sub)}</span></button><div class="hist-body" hidden></div>`;
+    const cuerpo = item.querySelector(".hist-body");
+    item.querySelector("[data-abrir]").addEventListener("click", () => {
+      if (!cuerpo.hidden) { cuerpo.hidden = true; return; }
+      cuerpo.hidden = false;
+      if (!cuerpo.childElementCount) {
+        montarTarjeta(cuerpo, nuevoResultado(it.guion, it.duracion), 1);
+        const conf = document.createElement("div");
+        conf.className = "confirm";
+        conf.innerHTML = '<button type="button" class="btn-sec" data-borrar style="color:var(--rec)">Borrar del historial</button>';
+        conf.addEventListener("click", async (e) => {
+          if (e.target.closest("[data-borrar]")) conf.innerHTML = '<span>¿Borrar este guion?</span><button type="button" class="btn-sec" data-no>No</button><button type="button" class="btn rec-btn" data-si>Sí, borrar</button>';
+          else if (e.target.closest("[data-no]")) conf.innerHTML = '<button type="button" class="btn-sec" data-borrar style="color:var(--rec)">Borrar del historial</button>';
+          else if (e.target.closest("[data-si]")) {
+            try { await borrarHistorial(it.id); item.remove(); } catch { conf.innerHTML = '<span class="error">No se pudo borrar.</span>'; }
+          }
+        });
+        cuerpo.append(conf);
+      }
+    });
+    cont.append(item);
+  }
+}
+
+// ---------- Pestañas ----------
+function abrirPestana(t) {
+  document.querySelectorAll("nav.tabs button").forEach((b) => b.setAttribute("aria-selected", b.dataset.tab === t));
+  ["crear", "arreglar", "ganchos", "historial"].forEach((x) => ($("#p-" + x).hidden = x !== t));
+  $("#resultados").hidden = !(t === "crear" || t === "arreglar");
+  ocultarEstado();
+  if (t === "historial") pintarHistorial();
+  try { localStorage.setItem("guiones-pestana", t); } catch {}
+}
+document.querySelector("nav.tabs").addEventListener("click", (e) => { const b = e.target.closest("[data-tab]"); if (b) abrirPestana(b.dataset.tab); });
+
+// ---------- Ejemplo inicial ----------
+estado.resultados = [nuevoResultado({
+  angulo: "La lista que te ahorra dinero",
+  ganchos: [
+    { tipo: "Error común", texto: "Deja de ir al súper sin hacer esto" },
+    { tipo: "Pregunta directa", texto: "¿Sabías que sin lista gastas mucho más?" },
+    { tipo: "Lista", texto: "3 trucos para gastar menos en el súper" },
+    { tipo: "POV", texto: "POV: por fin sales del súper con dinero" },
+    { tipo: "Llamado directo", texto: "Si siempre gastas de más, mira esto" },
+  ],
+  escenas: [
+    { texto: "Antes de salir, revisa qué tienes en casa.", duracion: 3, descripcion_visual: "Abre el refri y la alacena" },
+    { texto: "Anota solo lo que de verdad falta.", duracion: 3, descripcion_visual: "Escribe la lista en el celular" },
+    { texto: "Piensa las comidas de la semana.", duracion: 3, descripcion_visual: "Muestra un papel con los días" },
+    { texto: "Así no compras cosas que se echan a perder.", duracion: 3, descripcion_visual: "Muestra verduras tristes en la basura" },
+    { texto: "Nunca vayas al súper con hambre.", duracion: 3, descripcion_visual: "Cara de hambre frente a los dulces" },
+    { texto: "Con hambre, todo se te antoja.", duracion: 2, descripcion_visual: "Carrito lleno de botanas" },
+    { texto: "Compara el precio por kilo, no por paquete.", duracion: 4, descripcion_visual: "Señala la etiqueta del precio" },
+    { texto: "El paquete grande no siempre sale más barato.", duracion: 3, descripcion_visual: "Dos paquetes lado a lado" },
+  ],
+  cierres: ["Guárdalo para tu próxima compra", "Sígueme, en la parte 2 te digo qué marcas convienen", "Ahora ya sabes por qué no salir sin lista"],
+  hashtags: ["#ahorro", "#supermercado", "#mamás", "#tips"],
+  descripcion_post: "¿Tú haces lista antes de ir al súper? Cuéntame tu truco.",
+}, 30)];
+pintarResultados();
+
+let pestanaInicial = "crear";
+try { pestanaInicial = localStorage.getItem("guiones-pestana") || "crear"; } catch {}
+abrirPestana(["crear", "arreglar", "ganchos", "historial"].includes(pestanaInicial) ? pestanaInicial : "crear");
+</script>
