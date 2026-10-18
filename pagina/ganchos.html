@@ -2,354 +2,255 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;800&display=swap">
 <style>
-/* Layout: formulario corto arriba, tira de ganchos debajo; cada gancho es una tarjeta lista para copiar. */
+/* Layout: una sola lista larga, agrupada por tipo; los huecos se rellenan dentro de la frase. */
 :root {
-  --bg: #f2f3f6;
-  --panel: #ffffff;
-  --ink: #16171d;
-  --muted: #5d6170;
-  --line: #dcdee6;
-  --rec: #d93a3f;
-  --rec-soft: #fbe7e7;
-  --cue: #2b6cb0;
-  --cue-soft: #e4eef9;
-  --warn: #8a5a00;
-  --warn-soft: #fff3d6;
-  --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
-  --f-body: "Figtree", "Segoe UI", system-ui, sans-serif;
-  --f-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  --bg: #ffffff;
+  --ink: #18181b;
+  --muted: #71717a;
+  --line: #e7e7ea;
+  --blank: #fff1b8;
+  --accent: #e11d48;
+  --font: "Figtree", "Segoe UI", system-ui, sans-serif;
 }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #111217; --panel: #1a1c23; --ink: #eceef4; --muted: #9a9fb0; --line: #2c2f3a;
-    --rec: #ff5c61; --rec-soft: #3a1d20; --cue: #7cb4f0; --cue-soft: #1b2a3d;
-    --warn: #f2c25b; --warn-soft: #3a2e12; color-scheme: dark;
-  }
+  :root:not([data-theme="light"]) { --bg: #121214; --ink: #f2f2f3; --muted: #a1a1aa; --line: #2a2a2e; --blank: #4a3f12; --accent: #fb7185; color-scheme: dark; }
 }
-:root[data-theme="dark"] {
-  --bg: #111217; --panel: #1a1c23; --ink: #eceef4; --muted: #9a9fb0; --line: #2c2f3a;
-  --rec: #ff5c61; --rec-soft: #3a1d20; --cue: #7cb4f0; --cue-soft: #1b2a3d;
-  --warn: #f2c25b; --warn-soft: #3a2e12; color-scheme: dark;
-}
+:root[data-theme="dark"] { --bg: #121214; --ink: #f2f2f3; --muted: #a1a1aa; --line: #2a2a2e; --blank: #4a3f12; --accent: #fb7185; color-scheme: dark; }
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
 body {
-  background: var(--bg); color: var(--ink); font: 16px/1.5 var(--f-body);
+  background: var(--bg); color: var(--ink); font: 17px/1.5 var(--font);
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
-  padding-block: 16px 48px;
+  padding-block: 20px 60px;
 }
-.wrap { max-width: 640px; margin: 0 auto; display: grid; gap: 20px; }
-button, input { font: inherit; color: inherit; }
-button { cursor: pointer; }
-:focus-visible { outline: 2px solid var(--cue); outline-offset: 2px; }
-
-.brand { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-.brand h1 { margin: 0; font: 800 26px/1.1 var(--f-display); letter-spacing: -0.02em; }
-.rec { display: inline-flex; align-items: center; gap: 6px; font: 500 11px var(--f-mono); color: var(--rec); letter-spacing: 0.08em; border: 1px solid currentColor; border-radius: 4px; padding: 2px 6px; }
-.rec::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
-.lead { margin: 4px 0 0; color: var(--muted); font-size: 15px; }
-
-form { display: grid; gap: 14px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
-.field { display: grid; gap: 4px; }
-.label { font-size: 13px; font-weight: 600; }
-.help { font-size: 12px; color: var(--muted); }
-.input { width: 100%; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 11px 12px; }
-.input:focus { border-color: var(--cue); outline: none; }
-.opt { font-weight: 400; color: var(--muted); }
-.chips { display: flex; flex-wrap: wrap; gap: 8px; }
-.chip { background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; font-size: 13px; }
-.chip[aria-pressed="true"] { border-color: var(--rec); background: var(--rec-soft); color: var(--rec); font-weight: 600; }
-.link { background: none; border: 0; padding: 0; color: var(--cue); font-weight: 600; font-size: 14px; text-align: left; }
-.btn { border: 0; border-radius: 10px; padding: 13px 16px; font-weight: 700; background: var(--rec); color: #fff; }
-.btn-sec { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; font-weight: 600; font-size: 14px; }
-.warn { background: var(--warn-soft); color: var(--warn); border-radius: 10px; padding: 10px 12px; font-size: 14px; }
-
-.bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
-.tabs { display: flex; gap: 4px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 3px; }
-.tabs button { background: none; border: 0; border-radius: 8px; padding: 6px 12px; font-weight: 600; font-size: 14px; color: var(--muted); }
-.tabs button[aria-selected="true"] { background: var(--ink); color: var(--bg); }
-.count { font: 500 12px var(--f-mono); color: var(--muted); }
-
-.hooks { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
-.hook { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; display: grid; gap: 8px; }
-.hook .say { font: 600 19px/1.3 var(--f-display); text-wrap: balance; overflow-wrap: anywhere; }
-.hook .meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.tag { font-size: 12px; font-weight: 600; color: var(--cue); background: var(--cue-soft); border-radius: 6px; padding: 2px 8px; }
-.words { font: 500 11px var(--f-mono); color: var(--muted); font-variant-numeric: tabular-nums; }
-.words.long { color: var(--warn); }
-.hook .acts { margin-left: auto; display: flex; gap: 6px; }
-.star { background: none; border: 1px solid var(--line); border-radius: 10px; padding: 6px 10px; font-size: 16px; line-height: 1; color: var(--muted); }
-.star[aria-pressed="true"] { color: var(--rec); border-color: var(--rec); background: var(--rec-soft); }
-.more { width: 100%; }
-.empty { text-align: center; color: var(--muted); padding: 28px 0; }
+.wrap { max-width: 640px; margin: 0 auto; }
+h1 { font-size: 28px; font-weight: 800; margin: 0; letter-spacing: -0.01em; }
+.intro { color: var(--muted); margin: 6px 0 16px; font-size: 15px; }
+.intro mark { background: var(--blank); color: var(--ink); border-radius: 4px; padding: 0 4px; }
+.search { width: 100%; font: inherit; color: inherit; background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+.search:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.jump { display: flex; gap: 8px; overflow-x: auto; padding: 12px 0 4px; margin-bottom: 8px; }
+.jump a { flex: none; font-size: 14px; color: var(--ink); text-decoration: none; border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; }
+.jump a:hover { border-color: var(--accent); }
+h2 { font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); margin: 28px 0 4px; scroll-margin-top: 16px; }
+ol { list-style: none; margin: 0; padding: 0; }
+li { display: flex; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.say { flex: 1; min-width: 0; font-size: 18px; font-weight: 600; line-height: 1.6; overflow-wrap: anywhere; }
+.say input {
+  font: inherit; color: inherit; background: var(--blank); border: 0; border-radius: 6px;
+  padding: 0 6px; margin: 0 1px; min-width: 3ch; max-width: 100%;
+}
+.say input::placeholder { color: var(--muted); font-weight: 400; }
+.say input:focus { outline: 2px solid var(--accent); }
+.say input.done { background: transparent; box-shadow: inset 0 -2px 0 var(--blank); border-radius: 0; }
+button.copy { flex: none; font: 600 14px var(--font); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; cursor: pointer; }
+button.copy:hover { border-color: var(--accent); }
+button.copy.ok { color: var(--accent); border-color: var(--accent); }
+.none { color: var(--muted); padding: 24px 0; text-align: center; }
+.tip { margin-top: 32px; color: var(--muted); font-size: 14px; }
 </style>
 
 <div class="wrap">
-  <header>
-    <div class="brand"><h1>Generador de Ganchos</h1><span class="rec">0–3 s</span></div>
-    <p class="lead">Llena lo que sepas y toca Generar. Los ganchos salen de plantillas que funcionan en TikTok, con tus palabras.</p>
-  </header>
-
-  <form id="f">
-    <div class="field">
-      <label class="label" for="tema">¿De qué hablas?</label>
-      <input id="tema" class="input" value="el súper">
-      <span class="help">Un tema corto. Ej: el súper, tu celular, vender por WhatsApp</span>
-    </div>
-    <div class="field">
-      <label class="label" for="resultado">¿Qué quiere lograr tu público?</label>
-      <input id="resultado" class="input" value="ahorrar en el súper">
-      <span class="help">Empieza con un verbo. Ej: ahorrar, vender más, dormir mejor</span>
-    </div>
-    <div class="field">
-      <label class="label" for="problema">¿Qué le pasa a tu público?</label>
-      <input id="problema" class="input" value="siempre gastas de más">
-      <span class="help">Como se lo dirías a un amigo. Ej: siempre gastas de más</span>
-    </div>
-    <div class="field">
-      <label class="label" for="error">¿Qué hacen mal?</label>
-      <input id="error" class="input" value="ir al súper sin lista">
-      <span class="help">Empieza con un verbo. Ej: ir al súper sin lista</span>
-    </div>
-    <div class="field">
-      <label class="label" for="publico">¿Para quién es? <span class="opt">(opcional)</span></label>
-      <input id="publico" class="input" value="mamá y trabajas">
-      <span class="help">Para la frase "Si eres…". Ej: mamá y trabajas, estudiante, emprendedor</span>
-    </div>
-    <div class="field">
-      <label class="label" for="cosa">Producto o cosa <span class="opt">(opcional)</span></label>
-      <input id="cosa" class="input" value="las ofertas 2x1">
-    </div>
-    <div class="field">
-      <label class="label" for="dato">Un dato real <span class="opt">(opcional)</span></label>
-      <input id="dato" class="input" placeholder="Ej: sin lista gastas casi el doble">
-      <span class="help">Solo si es cierto. Si lo dejas vacío, no se usan ganchos con cifras.</span>
-    </div>
-    <div class="field">
-      <button type="button" class="link" id="tipos-toggle">▸ Tipos de gancho (todos)</button>
-      <div class="chips" id="tipos" hidden></div>
-    </div>
-    <div id="aviso" hidden></div>
-    <button class="btn">Generar ganchos</button>
-  </form>
-
-  <div class="bar">
-    <div class="tabs" role="tablist">
-      <button role="tab" data-vista="nuevos" aria-selected="true">Ganchos</button>
-      <button role="tab" data-vista="favs" aria-selected="false">Guardados</button>
-    </div>
-    <span class="count" id="count"></span>
-  </div>
-  <ul class="hooks" id="lista"></ul>
-  <button type="button" class="btn-sec more" id="mas">Ver otros 10</button>
+  <h1>Ganchos para TikTok</h1>
+  <p class="intro">Toca un <mark>hueco</mark>, escribe tu información y copia el gancho listo.</p>
+  <input class="search" id="buscar" type="search" placeholder="Buscar gancho…" aria-label="Buscar gancho">
+  <nav class="jump" id="saltos"></nav>
+  <div id="lista"></div>
+  <p class="tip">Consejo: los mejores ganchos tienen menos de 12 palabras y van directo, sin saludar.</p>
 </div>
 
 <script>
-// Plantillas por tipo. Huecos: {tema} {resultado} {problema} {error} {publico} {cosa} {dato} {n} {tiempo}
-const PLANTILLAS = {
-  "Pregunta directa": [
-    "¿Sabías que {dato}?", "¿Por qué nadie habla de {tema}?", "¿Te pasa que {problema}?",
-    "¿Quieres {resultado} sin complicarte?", "¿Y si {resultado} fuera más fácil de lo que crees?", "¿Por qué {problema}? Te explico",
+// Lista completa de ganchos. Lo que va entre [corchetes] es un hueco para rellenar.
+const GANCHOS = {
+  "Pregunta": [
+    "¿Sabías que [dato curioso]?",
+    "¿Por qué nadie habla de [tema]?",
+    "¿Te pasa que [problema]?",
+    "¿Quieres [resultado] sin complicarte?",
+    "¿Y si te digo que [resultado] es más fácil de lo que crees?",
+    "¿Por qué [problema]? Te explico",
+    "¿Todavía [error]?",
+    "¿Cuánto crees que cuesta [cosa]?",
+    "¿Qué harías si [situación]?",
+    "¿Tú también [problema]?",
   ],
-  "Error común": [
-    "Deja de {error} si quieres {resultado}", "El error que casi todos cometen con {tema}",
-    "Si quieres {resultado}, no vuelvas a {error}", "{error} te está costando caro",
-    "Yo también solía {error}. Gran error", "Nunca más vuelvas a {error}",
+  "Error": [
+    "Deja de [error] si quieres [resultado]",
+    "El error que casi todos cometen con [tema]",
+    "Si quieres [resultado], no vuelvas a [error]",
+    "[Error] te está costando caro",
+    "Yo también hacía esto mal con [tema]",
+    "Estás haciendo mal [tema] y no lo sabes",
+    "Nunca más vuelvas a [error]",
+    "Este error me costó [cantidad]",
   ],
   "Secreto": [
-    "Nadie te dice esto sobre {tema}", "El truco que nadie te cuenta para {resultado}",
-    "Lo que nadie te explica de {tema}", "Así es como logré {resultado}", "Ojalá alguien me hubiera dicho esto sobre {tema}",
+    "Nadie te dice esto sobre [tema]",
+    "El truco que nadie te cuenta para [resultado]",
+    "Lo que [personas] no quieren que sepas",
+    "Así es como logré [resultado]",
+    "Ojalá alguien me hubiera dicho esto sobre [tema]",
+    "Esto debí saberlo hace años",
+    "El secreto de [personas] para [resultado]",
+    "Esto es lo que nadie te enseña de [tema]",
   ],
-  "Dato impactante": [
-    "{dato}. Y casi nadie lo sabe", "{dato}. Te explico por qué", "Esto cambia todo lo que sabes de {tema}",
-    "Casi todos hacen esto mal: {error}",
+  "Dato": [
+    "[Dato]. Y casi nadie lo sabe",
+    "[Número] de cada 10 personas [error]",
+    "Esto cambia todo lo que sabes de [tema]",
+    "En [tiempo] logré [resultado]. Así lo hice",
+    "Gasté [cantidad] para aprender esto. Tú gratis",
+    "Con solo [cantidad] puedes [resultado]",
   ],
   "POV": [
-    "POV: por fin aprendes a {resultado}", "POV: eres {publico} y {problema}", "POV: descubres que {error} era el problema",
-    "POV: alguien te explica {tema} fácil",
+    "POV: acabas de descubrir [cosa]",
+    "POV: por fin entiendes [tema]",
+    "POV: eres [público] y [problema]",
+    "POV: alguien te explica [tema] fácil",
+    "POV: descubres que [error] era el problema",
+    "POV: es tu primer día de [actividad]",
   ],
   "Lista": [
-    "{n} cosas que nadie te dijo de {tema}", "{n} errores que te impiden {resultado}", "{n} trucos para {resultado}",
-    "{n} pasos para {resultado} desde hoy",
+    "[Número] cosas que nadie te dijo de [tema]",
+    "[Número] errores que te impiden [resultado]",
+    "[Número] trucos para [resultado]",
+    "[Número] cosas que hago antes de [acción]",
+    "[Número] señales de que [situación]",
+    "[Número] cosas que dejé de hacer para [resultado]",
+    "[Número] cosas que me hubiera gustado saber de [tema]",
   ],
   "Antes y después": [
-    "Así pasé de {error} a {resultado}", "Un solo cambio para {resultado}", "Mira la diferencia cuando dejas de {error}",
-    "Así estaba antes de aprender a {resultado}",
+    "Así estaba… así quedó",
+    "Antes [antes]. Ahora [después]",
+    "Hace un año [situación]. Hoy [resultado]",
+    "Mira la diferencia con un solo cambio",
+    "Así pasé de [antes] a [después]",
+    "Lo que cambió cuando dejé de [error]",
   ],
-  "Opinión impopular": [
-    "Opinión impopular: {resultado} es más fácil de lo que dicen", "Me van a odiar por decir esto de {tema}",
-    "Lo que te enseñaron sobre {tema} no funciona", "Nadie quiere aceptarlo, pero {dato}",
+  "Opinión": [
+    "Opinión impopular: [idea]",
+    "Me van a odiar por decir esto",
+    "Lo que te enseñaron sobre [tema] no funciona",
+    "[Cosa popular] no sirve. Te explico por qué",
+    "Nadie quiere aceptarlo, pero [idea]",
+    "Voy a decir lo que nadie se atreve sobre [tema]",
   ],
-  "Curiosidad incompleta": [
-    "Intenté {resultado} por {tiempo} y pasó esto", "Lo que pasó cuando dejé de {error}",
-    "Mira hasta el final si quieres {resultado}", "Esto es lo último que esperas de {tema}",
+  "Curiosidad": [
+    "Lo que pasó después nadie lo esperaba",
+    "Probé [cosa] por [tiempo] y pasó esto",
+    "Mira hasta el final, no te lo vas a creer",
+    "Esto es lo último que esperas de [tema]",
+    "No sabía que [cosa] podía hacer esto",
+    "Nadie me creyó cuando dije [idea]",
   ],
   "Llamado directo": [
-    "Si {problema}, mira esto", "Si eres {publico}, esto es para ti", "Guarda este video si quieres {resultado}",
-    "No sigas bajando si quieres {resultado}", "Si {problema}, tengo algo para ti",
+    "Si tienes [problema], mira esto",
+    "Si eres [público], esto es para ti",
+    "Guarda este video si quieres [resultado]",
+    "No sigas bajando si te importa [tema]",
+    "Si [problema], tengo algo para ti",
+    "Esto es para ti si [situación]",
+    "Comparte esto con alguien que [problema]",
   ],
-  "Historia personal": [
-    "El día que dejé de {error}, todo cambió", "Casi me rindo con {tema}, hasta que pasó esto",
-    "Nunca pensé que {resultado} fuera tan fácil", "Te cuento cómo aprendí a {resultado}",
+  "Historia": [
+    "El día que [situación], todo cambió",
+    "Casi me rindo con [tema], hasta que pasó esto",
+    "Te cuento cómo pasé de [antes] a [después]",
+    "Nunca pensé que [cosa] me pasaría a mí",
+    "Así empecé con [tema] sin saber nada",
+    "Esto me pasó por [error]",
   ],
   "Mito o verdad": [
-    "¿Mito o verdad? {dato}", "Te dijeron que {resultado} es difícil. No es así", "Lo que crees de {tema} no es cierto",
+    "¿Mito o verdad? [creencia]",
+    "Esto que crees de [tema] es mentira",
+    "Te dijeron que [creencia]. No es así",
+    "Todos creen que [creencia], pero no",
   ],
   "Advertencia": [
-    "Cuidado con {cosa}, te puede costar caro", "No compres {cosa} sin ver esto", "Si sueles {error}, para ya",
-    "Mira esto antes de volver a {error}",
+    "No compres [cosa] sin ver esto",
+    "Cuidado con [cosa], te puede costar caro",
+    "Antes de [acción], mira este video",
+    "Si vas a [acción], no hagas esto",
+    "Ojo si usas [cosa]",
   ],
   "Reto": [
-    "Te reto a {resultado} en {tiempo}", "Haz esto por {tiempo} y vas a {resultado}", "A que no sabías esto de {tema}",
+    "Te reto a [acción] por [tiempo]",
+    "A que no sabías hacer esto con [cosa]",
+    "Solo el 1% sabe esto de [tema]",
+    "Intenta esto por [tiempo] y me cuentas",
   ],
   "Comparación": [
-    "Lo que hace la mayoría vs. lo que funciona con {tema}", "{cosa}: ¿vale la pena o no?",
-    "Así lo hace la mayoría. Así se hace bien",
+    "[Opción A] o [opción B]: ¿cuál conviene?",
+    "Lo barato contra lo caro: [cosa]",
+    "Lo que hace la mayoría vs. lo que funciona",
+    "Probé [opción A] y [opción B]. Este ganó",
   ],
   "Paso a paso": [
-    "Cómo {resultado} en {n} pasos", "La forma más fácil de {resultado}", "Así puedes {resultado} desde hoy",
+    "Cómo [resultado] en [número] pasos",
+    "Así se hace [cosa] en menos de un minuto",
+    "La forma más fácil de [acción]",
+    "Así puedes [resultado] desde hoy",
+    "Te enseño a [acción] en 30 segundos",
   ],
 };
-const TIPOS = Object.keys(PLANTILLAS);
-const NUMEROS = ["3", "5"], TIEMPOS = ["7 días", "30 días", "una semana"];
-const CAMPOS = ["tema", "resultado", "problema", "error", "publico", "cosa", "dato"];
-
-// Palabras rebuscadas que conviene cambiar.
-const DIFICILES = {
-  utilizar: "usar", adquirir: "comprar", obtener: "conseguir", realizar: "hacer", implementar: "poner en práctica",
-  optimizar: "mejorar", potenciar: "hacer crecer", maximizar: "sacar más", incrementar: "subir", disminuir: "bajar",
-  proporcionar: "dar", brindar: "dar", requerir: "necesitar", solicitar: "pedir", gestionar: "manejar",
-  monetizar: "ganar dinero con", "óptimo": "mejor", fundamental: "muy importante", significativo: "grande",
-  "metodología": "forma", engagement: "interacción", mindset: "forma de pensar", feedback: "opinión", target: "público",
-};
-const sinAcentos = (s) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
-function buscarDificiles(texto) {
-  const t = ` ${sinAcentos(texto).replace(/[^a-z0-9ñ]+/g, " ")} `;
-  return Object.keys(DIFICILES).filter((p) => {
-    const r = sinAcentos(p), verbo = /(ar|er|ir)$/.test(r);
-    return verbo ? new RegExp(` ${r.slice(0, -2)}[a-z]{0,6} `).test(t) : t.includes(` ${r} `);
-  });
-}
 
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-const contar = (t) => t.split(/\s+/).filter((p) => /[\p{L}\p{N}]/u.test(p)).length;
-const azar = (xs) => xs[Math.floor(Math.random() * xs.length)];
-const barajar = (xs) => { const a = [...xs]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const slug = (s) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-");
 
-// Dentro de la frase: primera letra en minúscula (salvo siglas). Al inicio: mayúscula.
-const enMedio = (s) => (/^\p{Lu}\p{Ll}/u.test(s) ? s[0].toLowerCase() + s.slice(1) : s);
-const alInicio = (s) => s.replace(/^(¿|¡)?(\p{L})/u, (_, p = "", l) => p + l.toUpperCase());
-const limpiarCampo = (s) => s.trim().replace(/[.!?]+$/, "").replace(/\s+/g, " ");
+// Convierte "[tema]" en un hueco editable dentro de la frase.
+const conHuecos = (t) => esc(t).replace(/\[([^\]]+)\]/g, (_, h) => `<input type="text" placeholder="${h}" style="width:${h.length + 1}ch" aria-label="${h}">`);
 
-function rellenar(plantilla, datos) {
-  const faltan = [...plantilla.matchAll(/\{(\w+)\}/g)].map((m) => m[1]).filter((k) => CAMPOS.includes(k) && !datos[k]);
-  if (faltan.length) return null;
-  const texto = plantilla.replace(/\{(\w+)\}/g, (_, k) =>
-    k === "n" ? azar(NUMEROS) : k === "tiempo" ? azar(TIEMPOS) : enMedio(datos[k]));
-  // Contracciones: "de el" → "del", "a el" → "al".
-  return alInicio(texto.replace(/\b([Dd]e|[Aa]) el\b/g, (_, p) => (p.toLowerCase() === "de" ? p[0] + "el" : p + "l")));
-}
+$("#saltos").innerHTML = Object.keys(GANCHOS).map((tipo) => `<a href="#${slug(tipo)}">${esc(tipo)}</a>`).join("");
+$("#lista").innerHTML = Object.entries(GANCHOS).map(([tipo, lista]) => `
+  <section data-grupo>
+    <h2 id="${slug(tipo)}">${esc(tipo)}</h2>
+    <ol>${lista.map((t) => `<li data-texto="${esc(t.toLowerCase())}"><span class="say">${conHuecos(t)}</span><button type="button" class="copy">Copiar</button></li>`).join("")}</ol>
+  </section>`).join("") + '<p class="none" id="nada" hidden>No hay ganchos con esa palabra.</p>';
 
-// Genera todos los ganchos posibles y los ordena alternando tipos, con los cortos primero.
-function generar(datos, tipos) {
-  const porTipo = tipos.map((tipo) =>
-    barajar(PLANTILLAS[tipo].map((p) => rellenar(p, datos)).filter(Boolean))
-      .map((texto) => ({ tipo, texto, palabras: contar(texto) }))
-      .sort((a, b) => (a.palabras > 12) - (b.palabras > 12)));
-  const salida = [];
-  for (let i = 0; porTipo.some((l) => l[i]); i++) for (const l of barajar(porTipo)) if (l[i]) salida.push(l[i]);
-  return salida;
-}
-
-// ---------- Estado ----------
-let todos = [], visibles = 10, vista = "nuevos";
-const tiposSel = new Set();
-const CLAVE = "ganchos-guardados";
-const leerFavs = () => { try { return JSON.parse(localStorage.getItem(CLAVE) || "[]"); } catch { return []; } };
-let favs = leerFavs();
-const guardarFavs = () => { try { localStorage.setItem(CLAVE, JSON.stringify(favs)); } catch {} };
-const esFav = (t) => favs.some((f) => f.texto === t);
-
-function leerDatos() {
-  const d = {};
-  for (const k of CAMPOS) d[k] = limpiarCampo($("#" + k).value);
-  return d;
-}
-
-function pintar() {
-  const lista = vista === "favs" ? favs : todos.slice(0, visibles);
-  $("#count").textContent = vista === "favs" ? `${favs.length} guardados` : `${Math.min(visibles, todos.length)} de ${todos.length}`;
-  $("#mas").hidden = vista === "favs" || visibles >= todos.length;
-  $("#lista").innerHTML = lista.length ? lista.map((g, i) => `
-    <li class="hook">
-      <span class="say">${esc(g.texto)}</span>
-      <div class="meta">
-        <span class="tag">${esc(g.tipo)}</span>
-        <span class="words${g.palabras > 12 ? " long" : ""}">${g.palabras} palabras${g.palabras > 12 ? " · largo" : ""}</span>
-        <span class="acts">
-          <button type="button" class="star" data-fav="${i}" aria-pressed="${esFav(g.texto)}" aria-label="Guardar">★</button>
-          <button type="button" class="btn-sec" data-copy="${i}">Copiar</button>
-        </span>
-      </div>
-    </li>`).join("") : `<li class="empty">${vista === "favs" ? "Toca ★ en un gancho para guardarlo aquí." : "Llena al menos el tema y el resultado."}</li>`;
-}
-
-function generarYMostrar() {
-  const datos = leerDatos();
-  const tipos = tiposSel.size ? [...tiposSel] : TIPOS;
-  todos = generar(datos, tipos);
-  visibles = 10;
-  const dif = buscarDificiles(CAMPOS.map((k) => datos[k]).join(" "));
-  const aviso = $("#aviso");
-  aviso.hidden = !dif.length;
-  aviso.innerHTML = dif.length ? `<div class="warn">Palabras que conviene cambiar: ${dif.map((d) => `<b>${esc(d)}</b> → ${esc(DIFICILES[d])}`).join(", ")}</div>` : "";
-  cambiarVista("nuevos");
-}
-
-function cambiarVista(v) {
-  vista = v;
-  document.querySelectorAll(".tabs button").forEach((b) => b.setAttribute("aria-selected", b.dataset.vista === v));
-  pintar();
-}
-
-async function copiar(btn, texto) {
-  const original = btn.textContent;
-  try { await navigator.clipboard.writeText(texto); btn.textContent = "¡Copiado!"; }
-  catch {
-    const r = document.createRange(); r.selectNodeContents(btn.closest(".hook").querySelector(".say"));
-    getSelection().removeAllRanges(); getSelection().addRange(r);
-    btn.textContent = "Selecciona y copia";
-  }
-  setTimeout(() => (btn.textContent = original), 1500);
-}
-
-// ---------- Eventos ----------
-$("#f").addEventListener("submit", (e) => { e.preventDefault(); generarYMostrar(); });
-$("#mas").addEventListener("click", () => { visibles += 10; pintar(); });
-document.querySelector(".tabs").addEventListener("click", (e) => { const b = e.target.closest("[data-vista]"); if (b) cambiarVista(b.dataset.vista); });
-$("#lista").addEventListener("click", (e) => {
-  const lista = vista === "favs" ? favs : todos;
-  const c = e.target.closest("[data-copy]"), f = e.target.closest("[data-fav]");
-  if (c) copiar(c, lista[+c.dataset.copy].texto);
-  if (f) {
-    const g = lista[+f.dataset.fav];
-    favs = esFav(g.texto) ? favs.filter((x) => x.texto !== g.texto) : [g, ...favs];
-    guardarFavs(); pintar();
-  }
+// El hueco crece con lo que escribes y deja de verse amarillo cuando lo llenas.
+$("#lista").addEventListener("input", (e) => {
+  const i = e.target;
+  if (i.tagName !== "INPUT") return;
+  i.style.width = `${Math.max(i.placeholder.length, i.value.length) + 1}ch`;
+  i.classList.toggle("done", i.value.trim() !== "");
 });
 
-$("#tipos").innerHTML = TIPOS.map((t) => `<button type="button" class="chip" data-t="${esc(t)}" aria-pressed="false">${esc(t)}</button>`).join("");
-const rotulo = () => { $("#tipos-toggle").textContent = `${$("#tipos").hidden ? "▸" : "▾"} Tipos de gancho (${tiposSel.size ? `${tiposSel.size} elegidos` : "todos"})`; };
-$("#tipos-toggle").addEventListener("click", () => { $("#tipos").hidden = !$("#tipos").hidden; rotulo(); });
-$("#tipos").addEventListener("click", (e) => {
-  const b = e.target.closest(".chip"); if (!b) return;
-  const t = b.dataset.t; tiposSel.has(t) ? tiposSel.delete(t) : tiposSel.add(t);
-  b.setAttribute("aria-pressed", tiposSel.has(t)); rotulo();
+function textoFinal(li) {
+  let out = "";
+  li.querySelector(".say").childNodes.forEach((n) => {
+    out += n.nodeType === 3 ? n.textContent : (n.value.trim() || `[${n.placeholder}]`);
+  });
+  out = out.replace(/\s+/g, " ").trim().replace(/\b([Dd]e) el\b/g, "$1l").replace(/\b([Aa]) el\b/g, "$1l");
+  return out.replace(/^(¿|¡)?(\p{Ll})/u, (_, p = "", l) => p + l.toUpperCase());
+}
+
+$("#lista").addEventListener("click", async (e) => {
+  const b = e.target.closest(".copy");
+  if (!b) return;
+  const texto = textoFinal(b.closest("li"));
+  try {
+    await navigator.clipboard.writeText(texto);
+    b.textContent = "¡Listo!";
+  } catch {
+    b.textContent = "No se pudo";
+  }
+  b.classList.add("ok");
+  setTimeout(() => { b.textContent = "Copiar"; b.classList.remove("ok"); }, 1500);
 });
 
-generarYMostrar();
+$("#buscar").addEventListener("input", (e) => {
+  const q = e.target.value.trim().toLowerCase();
+  let total = 0;
+  document.querySelectorAll("[data-grupo]").forEach((g) => {
+    let visibles = 0;
+    g.querySelectorAll("li").forEach((li) => { const ok = !q || li.dataset.texto.includes(q); li.hidden = !ok; visibles += ok; });
+    g.hidden = !visibles;
+    total += visibles;
+  });
+  $("#nada").hidden = total > 0;
+});
 </script>
